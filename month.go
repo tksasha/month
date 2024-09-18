@@ -21,9 +21,7 @@ func (m Month) Begin() time.Time {
 func (m Month) End() time.Time {
 	return time.Date(
 		m.date.Year(),
-		time.Month(
-			m.date.Month()+1,
-		),
+		m.date.Month()+1,
 		m.date.Day(),
 		m.date.Hour(),
 		m.date.Minute(),
