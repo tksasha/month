@@ -3,7 +3,7 @@ LINTER=github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 FORMATTER=mvdan.cc/gofumpt@latest
 
 .PHONY: default
-default: vet fix fmt lint #test
+default: vet fix fmt lint test
 
 .PHONY: vet
 vet:
@@ -28,4 +28,4 @@ lint:
 .PHONY: test
 test:
 	@echo "go test"
-	@$(GO) test ./test/...
+	@$(GO) test ./...
