@@ -7,7 +7,8 @@ import (
 )
 
 type Month struct {
-	date time.Time
+	Begin driver.Value
+	End   driver.Value
 }
 
 func New(year, month string) Month {
@@ -17,23 +18,33 @@ func New(year, month string) Month {
 	}
 
 	return Month{
-		date: date,
+		Begin: begin(date),
+		End:   end(date),
 	}
 }
 
-func (m Month) Begin() (driver.Value, error) {
-	return m.date.Format(time.DateOnly), nil
+func begin(date time.Time) driver.Value {
+	return time.Date(
+		date.Year(),
+		date.Month(),
+		1,
+		0,
+		0,
+		0,
+		0,
+		date.Location(),
+	).Format(time.DateOnly)
 }
 
-func (m Month) End() (driver.Value, error) {
+func end(date time.Time) driver.Value {
 	return time.Date(
-		m.date.Year(),
-		m.date.Month()+1,
-		m.date.Day(),
-		m.date.Hour(),
-		m.date.Minute(),
-		m.date.Second(),
-		m.date.Nanosecond(),
-		m.date.Location(),
-	).Add(-1 * time.Nanosecond).Format(time.DateOnly), nil
+		date.Year(),
+		date.Month()+1,
+		1,
+		0,
+		0,
+		0,
+		0,
+		date.Location(),
+	).Add(-1 * time.Nanosecond).Format(time.DateOnly)
 }
