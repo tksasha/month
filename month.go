@@ -1,6 +1,7 @@
 package month
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"time"
 )
@@ -20,11 +21,11 @@ func New(year, month string) Month {
 	}
 }
 
-func (m Month) Begin() time.Time {
-	return m.date
+func (m Month) Begin() (driver.Value, error) {
+	return m.date.Format(time.DateOnly), nil
 }
 
-func (m Month) End() time.Time {
+func (m Month) End() (driver.Value, error) {
 	return time.Date(
 		m.date.Year(),
 		m.date.Month()+1,
@@ -34,5 +35,5 @@ func (m Month) End() time.Time {
 		m.date.Second(),
 		m.date.Nanosecond(),
 		m.date.Location(),
-	).Add(-1 * time.Nanosecond)
+	).Add(-1 * time.Nanosecond).Format(time.DateOnly), nil
 }
