@@ -9,17 +9,25 @@ import (
 )
 
 func TestBegin(t *testing.T) {
-	sbj := month.New(2024, 2).Begin()
+	sbj := month.New("2024", "2").Begin()
 
-	exp := time.Date(2024, time.Month(2), 1, 0, 0, 0, 0, time.UTC)
+	exp, err := time.Parse(time.DateOnly, "2024-02-01")
+	if err != nil {
+		t.Fatalf("failed to parse date: %v", err)
+	}
 
 	assert.Equal(t, sbj, exp)
 }
 
 func TestEnd(t *testing.T) {
-	sbj := month.New(2024, 2).End()
+	sbj := month.New("2024", "2").End()
 
-	exp := time.Date(2024, time.Month(2), 29, 23, 59, 59, 999999999, time.UTC)
+	exp, err := time.Parse(time.DateTime, "2024-03-01 00:00:00")
+	if err != nil {
+		t.Fatalf("failed to parse date: %v", err)
+	}
+
+	exp = exp.Add(-1 * time.Nanosecond)
 
 	assert.Equal(t, sbj, exp)
 }

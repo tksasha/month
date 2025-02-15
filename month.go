@@ -1,6 +1,7 @@
 package month
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -8,10 +9,15 @@ type Month struct {
 	date time.Time
 }
 
-func New(year, month int) Month {
-	date := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+func New(year, month string) Month {
+	date, err := time.Parse(time.DateOnly, fmt.Sprintf("%04s-%02s-01", year, month))
+	if err != nil {
+		date = time.Now()
+	}
 
-	return Month{date: date}
+	return Month{
+		date: date,
+	}
 }
 
 func (m Month) Begin() time.Time {

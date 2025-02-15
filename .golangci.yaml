@@ -1,5 +1,3 @@
-run:
-  skip-dirs:
 linters-settings:
   funlen:
     ignore-comments: true
@@ -13,13 +11,19 @@ linters:
   enable-all: true
   disable:
     ### deprecated, archived or obsolette by authors
-    - execinquery
-    - exportloopref
-    - gomnd # use mnd instead
     - paralleltest
+    - tenv
     ### disabled by me
     - depguard
+    - exhaustruct
+    - godot
+    - godox
+    - ireturn
+    - varnamelen
+    - wrapcheck
 issues:
   exclude-use-default: false
-  exclude:
-  exclude-files:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - err113

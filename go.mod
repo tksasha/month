@@ -1,6 +1,6 @@
 module github.com/tksasha/month
 
-go 1.23.1
+go 1.24
 
 require gotest.tools/v3 v3.5.1
 
