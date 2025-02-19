@@ -3,16 +3,21 @@ package month
 import (
 	"database/sql/driver"
 	"fmt"
+	"strconv"
 	"time"
 )
 
 type Month struct {
 	Number int
 	Name   string
+	date   time.Time
 }
 
-func All() []Month {
-	months := []Month{}
+func New(year, month string) Month {
+	date, err := time.Parse(time.DateOnly, fmt.Sprintf("%04s-%02s-01", year, month))
+	if err != nil {
+		date = time.Now()
+	}
 
 	names := []string{
 		"Січень",
@@ -29,30 +34,31 @@ func All() []Month {
 		"Грудень",
 	}
 
-	for n, name := range names {
-		months = append(months, Month{Number: n + 1, Name: name})
+	number := int(date.Month())
+
+	return Month{
+		Number: number,
+		Name:   names[number-1],
+		date:   date,
+	}
+}
+
+func All() []Month {
+	months := []Month{}
+
+	for n := range 12 {
+		number := strconv.Itoa(n + 1)
+
+		months = append(months, New("", number))
 	}
 
 	return months
 }
 
-func Begin(year, month string) driver.Value {
-	date := date(year, month)
-
-	return date.AddDate(0, 0, -date.Day()+1).Format(time.DateOnly)
+func (m Month) Begin() driver.Value {
+	return m.date.AddDate(0, 0, -m.date.Day()+1).Format(time.DateOnly)
 }
 
-func End(year, month string) driver.Value {
-	date := date(year, month)
-
-	return date.AddDate(0, 1, -date.Day()).Format(time.DateOnly)
-}
-
-func date(year, month string) time.Time {
-	date, err := time.Parse(time.DateOnly, fmt.Sprintf("%04s-%02s-01", year, month))
-	if err != nil {
-		date = time.Now()
-	}
-
-	return date
+func (m Month) End() driver.Value {
+	return m.date.AddDate(0, 1, -m.date.Day()).Format(time.DateOnly)
 }

@@ -1,32 +1,39 @@
 package month_test
 
 import (
-	"slices"
 	"testing"
 
 	"github.com/tksasha/month"
 	"gotest.tools/v3/assert"
 )
 
+func TestNew(t *testing.T) {
+	month := month.New("2024", "2")
+
+	assert.Equal(t, month.Number, 2)
+	assert.Equal(t, month.Name, "Лютий")
+}
+
 func TestAll(t *testing.T) {
-	expected := []month.Month{
-		{Number: 1, Name: "Січень"},
-		{Number: 2, Name: "Лютий"},
-		{Number: 3, Name: "Березень"},
-		{Number: 4, Name: "Квітень"},
-		{Number: 5, Name: "Травень"},
-		{Number: 6, Name: "Червень"},
-		{Number: 7, Name: "Липень"},
-		{Number: 8, Name: "Серпень"},
-		{Number: 9, Name: "Вересень"},
-		{Number: 10, Name: "Жовтень"},
-		{Number: 11, Name: "Листопад"},
-		{Number: 12, Name: "Грудень"},
+	names := []string{
+		"Січень",
+		"Лютий",
+		"Березень",
+		"Квітень",
+		"Травень",
+		"Червень",
+		"Липень",
+		"Серпень",
+		"Вересень",
+		"Жовтень",
+		"Листопад",
+		"Грудень",
 	}
 
-	actual := month.All()
-
-	assert.Assert(t, slices.Equal(actual, expected))
+	for idx, month := range month.All() {
+		assert.Equal(t, month.Number, idx+1)
+		assert.Equal(t, month.Name, names[idx])
+	}
 }
 
 func TestBegin(t *testing.T) {
@@ -46,7 +53,9 @@ func TestBegin(t *testing.T) {
 	}
 
 	for number, expected := range testmap {
-		actual := month.Begin("2024", number)
+		month := month.New("2024", number)
+
+		actual := month.Begin()
 
 		assert.Equal(t, actual, expected)
 	}
@@ -69,7 +78,9 @@ func TestEnd(t *testing.T) {
 	}
 
 	for number, expected := range testmap {
-		actual := month.End("2024", number)
+		month := month.New("2024", number)
+
+		actual := month.End()
 
 		assert.Equal(t, actual, expected)
 	}
