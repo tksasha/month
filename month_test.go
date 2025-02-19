@@ -12,6 +12,8 @@ func TestNew(t *testing.T) {
 
 	assert.Equal(t, month.Number, 2)
 	assert.Equal(t, month.Name, "Лютий")
+	assert.Equal(t, month.Begin, "2024-02-01")
+	assert.Equal(t, month.End, "2024-02-29")
 }
 
 func TestAll(t *testing.T) {
@@ -55,7 +57,7 @@ func TestBegin(t *testing.T) {
 	for number, expected := range testmap {
 		month := month.New("2024", number)
 
-		actual := month.Begin()
+		actual := month.Begin
 
 		assert.Equal(t, actual, expected)
 	}
@@ -80,8 +82,16 @@ func TestEnd(t *testing.T) {
 	for number, expected := range testmap {
 		month := month.New("2024", number)
 
-		actual := month.End()
+		actual := month.End
 
 		assert.Equal(t, actual, expected)
 	}
+}
+
+func TestEquals(t *testing.T) {
+	left := month.New("", "")
+
+	right := month.New("", "")
+
+	assert.Equal(t, left, right)
 }

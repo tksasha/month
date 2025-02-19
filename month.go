@@ -10,7 +10,8 @@ import (
 type Month struct {
 	Number int
 	Name   string
-	date   time.Time
+	Begin  driver.Value
+	End    driver.Value
 }
 
 func New(year, month string) Month {
@@ -18,6 +19,8 @@ func New(year, month string) Month {
 	if err != nil {
 		date = time.Now()
 	}
+
+	date = date.Truncate(time.Hour)
 
 	names := []string{
 		"Січень",
@@ -39,7 +42,8 @@ func New(year, month string) Month {
 	return Month{
 		Number: number,
 		Name:   names[number-1],
-		date:   date,
+		Begin:  begin(date),
+		End:    end(date),
 	}
 }
 
@@ -55,10 +59,10 @@ func All() []Month {
 	return months
 }
 
-func (m Month) Begin() driver.Value {
-	return m.date.AddDate(0, 0, -m.date.Day()+1).Format(time.DateOnly)
+func begin(date time.Time) driver.Value {
+	return date.AddDate(0, 0, -date.Day()+1).Format(time.DateOnly)
 }
 
-func (m Month) End() driver.Value {
-	return m.date.AddDate(0, 1, -m.date.Day()).Format(time.DateOnly)
+func end(date time.Time) driver.Value {
+	return date.AddDate(0, 1, -date.Day()).Format(time.DateOnly)
 }
