@@ -1,7 +1,6 @@
 package month
 
 import (
-	"database/sql/driver"
 	"fmt"
 	"strconv"
 	"time"
@@ -10,8 +9,8 @@ import (
 type Month struct {
 	Number int
 	Name   string
-	Begin  driver.Value
-	End    driver.Value
+	Begin  time.Time
+	End    time.Time
 }
 
 func New(year, month string) Month {
@@ -59,10 +58,10 @@ func All() []Month {
 	return months
 }
 
-func begin(date time.Time) driver.Value {
-	return date.AddDate(0, 0, -date.Day()+1).Format(time.DateOnly)
+func begin(date time.Time) time.Time {
+	return date.AddDate(0, 0, -date.Day()+1)
 }
 
-func end(date time.Time) driver.Value {
-	return date.AddDate(0, 1, -date.Day()).Format(time.DateOnly)
+func end(date time.Time) time.Time {
+	return date.AddDate(0, 1, -date.Day())
 }

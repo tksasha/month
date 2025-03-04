@@ -2,6 +2,7 @@ package month_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/tksasha/month"
 	"gotest.tools/v3/assert"
@@ -12,8 +13,8 @@ func TestNew(t *testing.T) {
 
 	assert.Equal(t, month.Number, 2)
 	assert.Equal(t, month.Name, "Лютий")
-	assert.Equal(t, month.Begin, "2024-02-01")
-	assert.Equal(t, month.End, "2024-02-29")
+	assert.Equal(t, month.Begin, time.Date(2024, 2, 1, 0, 0, 0, 0, time.UTC))
+	assert.Equal(t, month.End, time.Date(2024, 2, 29, 0, 0, 0, 0, time.UTC))
 }
 
 func TestAll(t *testing.T) {
@@ -59,7 +60,7 @@ func TestBegin(t *testing.T) {
 
 		actual := month.Begin
 
-		assert.Equal(t, actual, expected)
+		assert.Equal(t, actual.Format(time.DateOnly), expected)
 	}
 }
 
@@ -84,7 +85,7 @@ func TestEnd(t *testing.T) {
 
 		actual := month.End
 
-		assert.Equal(t, actual, expected)
+		assert.Equal(t, actual.Format(time.DateOnly), expected)
 	}
 }
 
